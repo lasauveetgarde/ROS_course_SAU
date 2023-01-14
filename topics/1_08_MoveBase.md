@@ -82,6 +82,7 @@ move_base_params.yaml                       # parameter setting file of move_bas
 ```
 Сделаем это через `roscp`:
 Для нашего случая будет такой ряд команд, если вы ранее в качестве робота выбрали `waffle`:
+
 ```bash
 # Путь к нашей папке config'ов
 COPY_TARGET=`rospack find super_robot_package`/config
@@ -97,6 +98,7 @@ roscp turtlebot3_navigation dwa_local_planner_params_waffle.yaml $COPY_TARGET
 ```bash
 sudo apt install ros-noetic-dwa-local-planner
 ```
+
 Так, теперь нам осталось создать launch-файл для запуска всего этого добра. Давайте посмотрим, что у нас уже имеется и возьмем к себе на вооружение.
 Итак, нам нужно посмотреть `turtlebot3_navigation/move_base.launch`. Если пакет `move_base` еще не установлен, то вы знаете, что делать :smirk:
 
