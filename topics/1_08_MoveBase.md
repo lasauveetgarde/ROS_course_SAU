@@ -3,6 +3,7 @@
 - [Состав move_base](#состав-move_base)
 - [Карты стоимостей](#карты-стоимостей)
 - [Планнер](#планнер)
+- [Переходим к практике](#переходим-к-практике)
 - [Чему научились?](#чему-научились)
 - [Задание](#задание)
 - [Вопросики](#вопросики)
@@ -61,9 +62,85 @@
 :octocat: TODO
 В целом это уже было в уроке по тартлботу, я хз че тут можно добавить.
 
+## Переходим к практике
+
+Сейчас давайте уже подробнее разберемся, как же заставить робота самостоятельно ехать по заданной траектории, а именно посмотрим на пакет [move_base](http://wiki.ros.org/move_base),располагающийся в стеке навигации, который мы с вами рассмотрели чуть раньше.
+
+Для того, чтобы наш робот поехал, а именно заработала автономная навигация - нужно подготовить дополнительные файлы. Давайте скопируем файлы из `turtlebot3_navigation/param` к себе в папочку `config`.
+
+Согласно умной [страничке в гугле](http://wiki.ros.org/turtlebot3_navigation) для навигации нашего робота нужно скопировать к себе следующие файлы:
+
+```bash
+base_local_planner_params.yaml              # The parameter of the speed command to the robot
+costmap_common_params_burger.yaml           # The parameter of costmap configuration consists
+costmap_common_params_waffle.yaml           # The parameter of costmap configuration consists
+costmap_common_params_waffle_pi.yaml        # The parameter of costmap configuration consists
+dwa_local_planner_params.yaml               # The parameter of the speed command to the robot
+global_costmap_params.yaml                  # The parameter of the global area motion planning
+local_costmap_params.yaml                   # The parameter of the local area motion planning
+move_base_params.yaml                       # parameter setting file of move_base that supervises the motion planning.
+```
+Сделаем это через `roscp`:
+Для нашего случая будет такой ряд команд, если вы ранее в качестве робота выбрали `waffle`:
+```bash
+# Путь к нашей папке config'ов
+COPY_TARGET=`rospack find super_robot_package`/config
+# Копируем файлы 
+roscp turtlebot3_navigation costmap_common_params_waffle.yaml $COPY_TARGET
+roscp turtlebot3_navigation local_costmap_params.yaml $COPY_TARGET
+roscp turtlebot3_navigation global_costmap_params.yaml $COPY_TARGET
+roscp turtlebot3_navigation move_base_params.yaml $COPY_TARGET
+roscp turtlebot3_navigation dwa_local_planner_params_waffle.yaml $COPY_TARGET
+```
+Осталось совсем немного... скачаем локальный планировщик [dwa_local_planner](http://wiki.ros.org/dwa_local_planner)
+
+```bash
+sudo apt install ros-noetic-dwa-local-planner
+```
+Так, теперь нам осталось создать launch-файл для запуска всего этого добра. Давайте посмотрим, что у нас уже имеется и возьмем к себе на вооружение.
+Итак, нам нужно посмотреть `turtlebot3_navigation/move_base.launch`. Если пакет `move_base` еще не установлен, то вы знаете, что делать :smirk:
+
+```bash
+roscat turtlebot3_navigation move_base.launch
+```
+Ну-с, тут вроде бы все достаточно понятно... вначале у нас идут аргументы, потом подгружаются конфиги, которые мы с вами уже скопировали к себе.
+
+```xml
+<launch>
+  <!-- Arguments -->
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="cmd_vel_topic" default="/cmd_vel" />
+  <arg name="odom_topic" default="odom" />
+  <arg name="move_forward_only" default="false"/>
+
+  <!-- move_base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_$(arg model).yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_$(arg model).yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot3_navigation)/param/dwa_local_planner_params_$(arg model).yaml" command="load" />
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+    <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+  </node>
+</launch>
+
+```
+Давайте создадим себе `turtlebot3_move_base.launch` и удалим из `turtlebot3_navigation/move_base.launch` конфиги, которые мы не будем использовать. В принципе, чтобы наш с вами робот поехал автономно осталось уже совсем немного. Осталось написать launch-файл для запуска симулятора, навигации и построения карты. Наверно, я вас сейчас обрадую:). У нас уже с вами все есть.
+
+> :muscle: Попробуй написать launch-файл `turtlebot3_gazebo_slam.launch`, в котором будет запуск `turtlebot3_sim_start.launch`, `turtlebot3_my_gmapping.launch`, `turtlebot3_move_base.launch` и не забудь добавить запуск `rviz`
+
+<p align="center">
+<img src=../assets/01_10_slam.gif width=900/>
+</p>
+
+
 ## Чему научились?
 
-TODO
+TODOS
 
 ## Задание
 
