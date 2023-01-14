@@ -1,0 +1,8 @@
+<launch>
+    <include file="$(find study_course)/launch/turtlebot3_sim_start.launch"/>
+    <include file="$(find study_course)/launch/turtlebot3_my_gmapping.launch"/>
+    <include file="$(find study_course)/launch/move_base.launch"/>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find study_course)/rviz/sim_mapping.rviz" />
+
+</launch>
