@@ -97,12 +97,12 @@ rosrun rqt_reconfigure rqt_reconfigure
 
 Окей, а что будет, если этот параметр понизить до 0.5? А потом до 0? Пробуем:
 
-<center>max_vel_theta = 0.5</center>
+`max_vel_theta = 0.5`
 <p align="center">
 <img src=../assets/01_13_dwa_max_theta0_5.gif width=600/> 
 </p>
 
-<center>max_vel_theta = 0.0</center>
+`max_vel_theta = 0.0`
 <p align="center">
 <img src=../assets/01_14_dwa_max_theta0.gif width=600/>
 </p>
@@ -122,9 +122,8 @@ rosrun rqt_reconfigure rqt_reconfigure
 <param name="base_global_planner" value="global_planner/GlobalPlanner" />
 ```
 > Если когда нибудь подумаете, что у вас плохо с фантазией, вспомните, что разработчик дал своему глобальному планнеру имя "GlobalPlanner" :joy:
-Теперь при запуске будет использовать данный планнер, со стандартными параметрами. Смену планнера можно увидеть по новым названиям топиков для глобального пути: `/move_base/GlobalPlanner/plan`
 
-Список параметров планировщика можно глянуть на ROS wiki, но как и с локальным параметрами можно выгружать из конфига. Для этого в своей папке с конфигами создаем файл `global_planner_params.yaml` со следующим содержанием:
+Теперь при запуске будет использовать данный планнер, со стандартными параметрами. Смену планнера можно увидеть по новым названиям топиков для глобального пути: `/move_base/GlobalPlanner/plan` Список параметров планировщика можно глянуть на ROS wiki, но как и с локальным параметрами можно выгружать из конфига. Для этого в своей папке с конфигами создаем файл `global_planner_params.yaml` со следующим содержанием:
 
 ```bash
 GlobalPlanner:                                  # Also see: http://wiki.ros.org/global_planner
