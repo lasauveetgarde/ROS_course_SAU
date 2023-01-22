@@ -92,14 +92,21 @@ rosrun rqt_reconfigure rqt_reconfigure
 Напимер, давайте посмотрим на параметр `max_vel_theta`. Для `waffle` этот параметр задан, как `max_vel_theta: 1.82`
 
 <p align="center">
-<img src=../assets/01_12_dwa_max_theta1_82.gif width=900/>
+<img src=../assets/01_12_dwa_max_theta1_82.gif width=600/>
 </p>
 
-Окей, а что будет, если этот параметр понизить до 0.5? А потом до 0? Пробуем
+Окей, а что будет, если этот параметр понизить до 0.5? А потом до 0? Пробуем:
 
+<center>max_vel_theta = 0.5</center>
 <p align="center">
-<img src=../assets/01_13_dwa_max_theta0_5.gif width=500/> <img src=../assets/01_14_dwa_max_theta0.gif width=500/>
+<img src=../assets/01_13_dwa_max_theta0_5.gif width=600/> 
 </p>
+
+<center>max_vel_theta = 0.0</center>
+<p align="center">
+<img src=../assets/01_14_dwa_max_theta0.gif width=600/>
+</p>
+
 
 > :muscle: Время сделать вывод... каким образом изменение параметра `max_vel_theta` сказывается на планировании маршрута робота?
 
@@ -292,4 +299,7 @@ oscillation_distance: 0.2
 
 ## Ресурсы
 
-Более подробную информацию о настройке стека навигации вы можете найти в [Basic Navigation Tuning Guide](http://wiki.ros.org/navigation/Tutorials/Navigation%20Tuning%20Guide), [ROS Navigation Tuning Guide by Kaiyu Zheng](http://kaiyuzheng.me/documents/navguide.pdf), и в 11 главе [ROS Robot Programming book](https://community.robotsource.org/t/download-the-ros-robot-programming-book-for-free/51).
+Более подробную информацию о настройке стека навигации вы можете найти:
+* [Basic Navigation Tuning Guide](http://wiki.ros.org/navigation/Tutorials/Navigation%20Tuning%20Guide)
+* [ROS Navigation Tuning Guide by Kaiyu Zheng](http://kaiyuzheng.me/documents/navguide.pdf)
+* 11 глава [ROS Robot Programming book](https://community.robotsource.org/t/download-the-ros-robot-programming-book-for-free/51)
